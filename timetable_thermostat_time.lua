@@ -1,3 +1,5 @@
+-- В зависимоти от дня недели и времени устанавливаем нужную температуру
+-- Создаем два виртуальных термостата - температура ночтю и днем, скрипт будет брать у них значение и ставить в виртуальные термостаты
 commandArray = {}
 
 function fillTabTemperature()
@@ -13,7 +15,7 @@ function fillTabTemperature()
 	local time_Relax_Weekend     = 2130 -- начало укладывания  
 	local time_Sleep_Weekend     = 2200 -- время отбоя в выходные 
 
-	local interval = {}
+	local interval = {} -- таблица дней, часов и температур
 
 	-- зал 
 	interval[#interval+1] = {room = 1, day = 1, timeFrom = time_Wake,           timeTo = time_Sleep,            temp = tempDay} 
@@ -96,19 +98,19 @@ function getTemperature(thermostatName)
 
 end
 
-rooms = {'Hall', 'Bedroom', 'Children'}
+rooms = {'Hall', 'Bedroom', 'Children'} -- комнаты
 
 for room in pairs(rooms) do 
 
 	local roomName       = rooms[room]
-	local thermostatName = 'Thermostat '..roomName -- имя термостата
+	local thermostatName = 'Thermostat '..roomName -- имя виртуального термостата
 
 	local tempTs = tonumber(otherdevices_svalues[thermostatName]) -- текущее значение температуры вирт термостата
 	local setTemp  = getTemperature(thermostatName)               -- температура которую установить
 
 	if setTemp ~= nil and tempTs ~= setTemp and otherdevices['Auto Thermostat '..roomName] == 'On' then
 
-		commandArray[#commandArray+1] = {['UpdateDevice'] = otherdevices_idx[thermostatName]..'|0|'..tostring(setTemp)} -- устанавливаем новое значение термостата
+		commandArray[#commandArray+1] = {['UpdateDevice'] = otherdevices_idx[thermostatName]..'|0|'..tostring(setTemp)} -- устанавливаем новое значение виртуального термостата
 
 		print('***** Установка значения термостата '..thermostatName..': стар '..tostring(tempTs)..' нов '..tostring(setTemp).." *****")
 

@@ -22,13 +22,13 @@ for room in pairs(rooms) do
 
 	local roomName       = rooms[room] --- имя комнаты
 	local comfortName    = 'Comfort setpoint '..roomName -- имя термостата
-	roomName = string.gsub(roomName, ' Tele', '') -- Вырезаем из имени термостата 'Tele' чтобы скрип тумал, что это один термостат так как термостаты Hall и Hall Tele находятся в одной комнате, а значит управляем ими одинаково
+	roomName = string.gsub(roomName, ' Tele', '') -- Вырезаем из имени термостата 'Tele' чтобы скрипт думал, что это один термостат так как термостаты Hall и Hall Tele находятся в одной комнате, а значит управляем ими одинаково
 
 	local comfort  = Round(tonumber(otherdevices_svalues[comfortName]), 1)  -- текущее значение Comfort (температуры режима Comfort)
 	local tempNeed = Round(tonumber(otherdevices_svalues['Thermostat '..roomName]), 1) -- текущее значение температуры вирт термостата
 	local tempHum  = Round(tonumber(otherdevices_temperature['TempHum '..roomName]), 1) -- текущее значение tempHum (внешний датчик температуры)
 	
-	local difference = tempNeed - tempHum -- разница между нужной температуры и двнешнего атчика температуры
+	local difference = tempNeed - tempHum -- разница между нужной температуры и внешнего датчика температуры
 	if difference > 0 and difference <= delta then 
 	    difference = 0   
 	end    

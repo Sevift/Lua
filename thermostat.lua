@@ -33,7 +33,7 @@ for room in pairs(rooms) do
 	    difference = 0   
 	end    
 
-	local setComfort = Round(difference * 10 + tempNeed, 1)
+	local setComfort = Round(difference * 10 + tempNeed, 1) -- на каждую разницу в 0.1 градус меняем Comfort на 1 градус
 
 	if setComfort < minTemp then
 		setComfort = minTemp

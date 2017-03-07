@@ -7,7 +7,7 @@ if devicechanged['TempHum Hall_Temperature'] == nil and
 end
 --//////////////////////////////////////////////////////////////////////////////
 
-function Round(num, idp) -- округление, которгго нет нихуя в lua
+function Round(num, idp) -- округление
   local mult = 10^(idp or 0)
   return math.floor(num * mult + 0.5) / mult
 end

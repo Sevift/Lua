@@ -66,7 +66,7 @@ function iCloud(user, credentials, iPhone, location, iPhoneName, locationName)
                         local address = getAddress(lon,lat) -- лимит вызовов гугла в сутки 2400
                         local address_distance_text = address..' '..distance_text
                         commandArray[#commandArray+1] = {['UpdateDevice'] = otherdevices_idx[locationName]..'|0|'..STATUS_NOT_HOME..' '..address_distance_text}
-                        if iPhone ~= 'Off' then
+                        if iPhone ~= 'On' then
                             commandArray[#commandArray+1] = {[iPhoneName] = 'On'}
                         end
                     end

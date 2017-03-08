@@ -15,9 +15,9 @@ function Round(num, idp) -- округление
   return math.floor(num * mult + 0.5) / mult
 end
 
-local minTemp = 18 -- максимальная температура термостата
-local maxTemp = 35 -- минимальная температура термостата
-local delta = 0.2 -- разница температур вниз при которой ни чего не делаем
+minTemp = 18 -- максимальная температура термостата
+maxTemp = 35 -- минимальная температура термостата
+delta = 0.2 -- разница температур вниз при которой ни чего не делаем
  
 rooms = {'Hall', 'Hall Tele', 'Bedroom', 'Children'} -- комнаты
 
@@ -25,7 +25,7 @@ for room in pairs(rooms) do
 
 	local roomName       = rooms[room] --- имя комнаты
 	local comfortName    = 'Comfort setpoint '..roomName -- имя режима Comfort реального термостата
-	roomName = string.gsub(roomName, ' Tele', '') -- Вырезаем из имени термостата 'Tele' чтобы скрипт думал, что это один термостат так как термостаты Hall и Hall Tele находятся в одной комнате, а значит управляем ими одинаково
+	roomName = roomName:gsub(' Tele', '') -- Вырезаем из имени термостата 'Tele' чтобы скрипт думал, что это один термостат так как термостаты Hall и Hall Tele находятся в одной комнате, а значит управляем ими одинаково
 
 	local comfort  = Round(tonumber(otherdevices_svalues[comfortName]), 1)  -- текущее значение Comfort (температуры режима Comfort)
 	local tempNeed = Round(tonumber(otherdevices_svalues['Thermostat '..roomName]), 1) -- текущее значение температуры вирт термостата

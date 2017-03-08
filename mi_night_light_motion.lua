@@ -9,12 +9,12 @@ if devicechanged['Burglar Hall'] == nil and
 end
 --//////////////////////////////////////////////////////////////////////////////
 
-local setLevel = 0
-local miRGBName = 'Xiaomi RGB Gateway'
+setLevel = 0
+miRGBName = 'Xiaomi RGB Gateway'
 
-local lux = tonumber(otherdevices_svalues['Lux Hall']) -- текущее значение Lux
-local rgbLevel = tonumber(otherdevices_svalues[miRGBName]) -- текущее значение Mi RGB level 
-local burglar = otherdevices['Burglar Hall'] -- текущее значение burglar
+lux = tonumber(otherdevices_svalues['Lux Hall']) -- текущее значение Lux
+rgbLevel = tonumber(otherdevices_svalues[miRGBName]) -- текущее значение Mi RGB level 
+burglar = otherdevices['Burglar Hall'] -- текущее значение burglar
 
 if burglar == 'On' then -- если сработал датчик движения
     if lux < 1 then -- если датчик света меньше чем задано

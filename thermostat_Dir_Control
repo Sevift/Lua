@@ -1,0 +1,54 @@
+-- Прямое управление термостатами
+-- Добавляем виртуальные термостаты - в них будем устанавливать нужную температуру в комнатах
+-- В звисимостти от установленной температуры и внешних датчиков температуры будем управлять диммерами реальных термостататов
+
+commandArray = {}
+
+if devicechanged['TempHum Hall_Temperature'] == nil and
+    devicechanged['TempHum Bedroom_Temperature'] == nil and
+    devicechanged['TempHum Children_Temperature'] == nil then
+    return commandArray -- если это не внешние датчики температуры, то ни чего не делаем 
+end
+--//////////////////////////////////////////////////////////////////////////////
+
+function Round(num, idp) -- округление
+  local mult = 10^(idp or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+ 
+rooms = {'Hall', 'Hall Tele', 'Bedroom', 'Children'} -- комнаты
+
+for room in pairs(rooms) do 
+    
+    local setLevel = 0
+	local roomName       = rooms[room] --- имя комнаты
+	local levelName    = 'Thermostat Level '..roomName -- имя диммера реального термостата
+	roomName = roomName:gsub(' Tele', '') -- Вырезаем из имени термостата 'Tele' чтобы скрипт думал, что это один термостат так как термостаты Hall и Hall Tele находятся в одной комнате, а значит управляем ими одинаково
+
+	local level  = tonumber(otherdevices_svalues[levelName])  -- текущее значение диммера
+	local tempNeed = Round(tonumber(otherdevices_svalues['Thermostat '..roomName]), 1) -- текущее значение температуры вирт термостата
+	local tempHum  = Round(tonumber(otherdevices_temperature['TempHum '..roomName]), 1) -- текущее значение tempHum (внешний датчик температуры)
+	
+	local setLevel = Round((tempNeed - (tempHum+0.1)) * 100, 1) -- на каждую разницу в 0.1 градус меняем диммер на 10%
+
+	if setLevel < 0 then
+		setLevel = 0
+	end
+	
+	if setLevel > 100 then
+		setLevel = 100
+	end	
+	
+	--print(levelName..' level= '..level..' setLevel= '.. setLevel..' условие '..tostring(setLevel == level))
+    --print('tempHum: '..tempHum..' tempNeed ' ..tempNeed)
+
+	if setLevel ~= level then
+
+		commandArray[#commandArray+1] = {[levelName] = 'Set Level ' ..setLevel} -- устанавливаем новое значение Level
+		print('***** Установка значения level '..levelName..': стар '..tostring(level)..' нов '..tostring(setLevel).." *****")
+
+	end	
+
+end
+
+return commandArray
